@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Autoplay (GIF Style)</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    #unmuteNotice {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      background: rgba(0,0,0,0.5);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <video id="video" autoplay loop playsinline muted>
+    <!-- c:\Users\user\Downloads\Untitled design.mp4 -->
+    <source src="c:\Users\user\Downloads\Untitled design.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  
+  <div id="unmuteNotice">Click anywhere to unmute</div>
+
+  <script>
+    const video = document.getElementById('video');
+    const unmuteNotice = document.getElementById('unmuteNotice');
+
+    // First try to play with sound (will fail in most browsers)
+    video.muted = false;
+    video.play()
+      .then(() => {
+        // Successfully autoplayed with sound (rare)
+        unmuteNotice.style.display = 'none';
+      })
+      .catch(error => {
+        // Fallback to muted autoplay
+        video.muted = true;
+        video.play();
+        
+        // Show notice about clicking to unmute
+        unmuteNotice.style.display = 'block';
+      });
+
+    // Allow clicking anywhere to unmute
+    document.body.addEventListener('click', () => {
+      if (video.muted) {
+        video.muted = false;
+        unmuteNotice.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
